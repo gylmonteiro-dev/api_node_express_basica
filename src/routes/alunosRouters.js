@@ -1,5 +1,5 @@
 import express from "express";
-import { PrismaClient } from "../generated/prisma/";
+import { PrismaClient } from "../generated/prisma/client.js";
 import { alunos } from "../dados.js";
 
 const router = express.Router();
@@ -7,16 +7,19 @@ const prisma = new PrismaClient();
 
 router.get("/", async (req, res) => {
   const alunosBd = await prisma.aluno.findMany();
-  console.log(alunosBd);
-  res.json(alunos);
+  res.json(alunosBd);
 });
 
-router.post("/", (req, res) => {
-  let dados = req.body;
-  const id_atual = alunos[alunos.length - 1].id + 1;
-  dados.id = id_atual;
-  alunos.push(dados);
-  res.json(dados);
+router.post("/", async (req, res) => {
+  ///let dados = req.body;
+  ///const id_atual = alunos[alunos.length - 1].id + 1;
+  ///dados.id = id_atual;
+  ///alunos.push(dados);
+
+  const { primeiro_nome, segundo_nome, natural, idade, turmaId } = req.body;
+  console.log(primeiro_nome);
+
+  res.json(primeiro_nome);
 });
 
 router.get("/:id", (req, res) => {
