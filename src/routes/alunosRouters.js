@@ -17,17 +17,31 @@ router.post("/", async (req, res) => {
   ///alunos.push(dados);
 
   const { primeiro_nome, segundo_nome, natural, idade, turmaId } = req.body;
-  console.log(primeiro_nome);
 
-  res.json(primeiro_nome);
+  const novoAluno = await prisma.aluno.create({
+    data: {
+      primeiro_nome: primeiro_nome,
+      segundo_nome: segundo_nome,
+      natural: natural,
+      idade: idade,
+      turmaId: turmaId,
+    },
+  });
+
+  res.json(novoAluno);
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  const aluno = alunos.find((aluno) => aluno.id === id);
+  //const aluno = alunos.find((aluno) => aluno.id === id);
+  const alunoBd = await prisma.aluno.findUnique({
+    where: {
+      id: id,
+    },
+  });
 
-  if (aluno) {
-    res.json(aluno);
+  if (alunoBd) {
+    res.json(alunoBd);
   } else {
     res.json({ mensagem: "Aluno não encontrado" });
   }
