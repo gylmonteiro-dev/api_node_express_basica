@@ -1,9 +1,8 @@
 import express from "express";
-import { PrismaClient } from "../generated/prisma/client.js";
+import prisma from "../utils/prismaInstancia.js";
 import { alunos } from "../dados.js";
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 router.get("/", async (req, res) => {
   const alunosBd = await prisma.aluno.findMany();
